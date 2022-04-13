@@ -11,6 +11,4 @@ const start = () => ReactDOM.render(
   document.getElementById('cp-form')
 );
 
-start()
-
 window.cyclopay.start = start()
