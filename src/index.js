@@ -4,9 +4,13 @@ import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-ReactDOM.render(
+const start = () => ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('cp-cardform')
+  document.getElementById('cp-form')
 );
+
+start()
+
+window.cyclopay.start = start()

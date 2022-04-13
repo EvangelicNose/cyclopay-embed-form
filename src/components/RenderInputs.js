@@ -17,17 +17,20 @@ let documentType
 const RenderInputsV4 = ({ inputs, formikprops, checkoutConfig }) => {
     return (
         <div style={{ width: "100%" }}>
-            {inputs.map((input, index) => (
-                <div key={`row-${index}`} className="flex-row xs-wrap">
-                    <div key={`input-${input.name}`} className="flex-col" style={{ flex: 1, margin: 10, minWidth: 200 }}>
-                        <InputsSwitch type={input.name} label={input.label} error={Boolean(formikprops.errors[input.name] && formikprops.touched[input.name])} required checkoutConfig={checkoutConfig} formikprops={formikprops} />
-                        <span style={{ fontSize: '0.7rem', color: 'red' }}>
-                            {formikprops.errors[input.name] && formikprops.touched[input.name] && formikprops.errors[input.name]}
-                        </span>
-                    </div>
+            {inputs.map((input, index) => {
+                if (input.separator) return <h3 key={`input-separator-${index}`} style={{ margin: 10 }}>{input.separator}</h3>
+                return (
+                    <div key={`row-${index}`} className="flex-row xs-wrap">
+                        <div key={`input-${input.name}`} className="flex-col" style={{ flex: 1, margin: 10, minWidth: 200 }}>
+                            <InputsSwitch type={input.name} label={input.label} error={Boolean(formikprops.errors[input.name] && formikprops.touched[input.name])} required checkoutConfig={checkoutConfig} formikprops={formikprops} />
+                            <span style={{ fontSize: '0.7rem', color: 'red' }}>
+                                {formikprops.errors[input.name] && formikprops.touched[input.name] && formikprops.errors[input.name]}
+                            </span>
+                        </div>
 
-                </div>
-            ))}
+                    </div>
+                )
+            })}
         </div>
     )
 }
@@ -149,7 +152,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.first_name}`}
+                label={label || `${t.forms.first_name}`}
                 name={type} variant="outlined" />
             break;
 
@@ -161,7 +164,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.last_name}`}
+                label={label || `${t.forms.last_name}`}
                 name={type} variant="outlined" />
 
             break;
@@ -259,13 +262,8 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                     <TextInputMasked
                         id="form-input-section"
                         inputPro
-                        shrink={true}
                         type="tel"
-                        labelProps={{ shrink: true }}
-                        label={label || t(
-                            "^forms.document_number",
-                            "*"
-                        )}
+                        label={label || t.forms.document_number}
                         inputRef={ref}
                         {...props}
                     />
@@ -284,7 +282,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.email}`} type="email"
+                label={label || `${t.forms.email}`} type="email"
                 name={type} variant="outlined" />
 
             break;
@@ -296,8 +294,6 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 <div style={{
                     width: formikprops.values.mobile_phone?.length > 12 ? '0px' : '100%',
                     overflow: formikprops.values.mobile_phone?.length > 12 && "hidden",
-                    margin: "-5px",
-                    padding: 5,
                     opacity: formikprops.values.mobile_phone?.length > 12 && 0
                 }}
                 >
@@ -308,7 +304,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                         inputStyle={{ borderColor: error && "#f44336" }}
                         error={error}
                         onBlur={formikprops.handleBlur}
-                        style={{ width: formikprops.values.mobile_phone?.length > 12 && 0 }}
+                        style={{ width: formikprops.values.mobile_phone?.length > 12 ? 0 : '100%' }}
                         onChange={(value) => {
                             formikprops.setFieldValue(
                                 type,
@@ -316,17 +312,15 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                             );
                             handleMobileFocus(value)
                         }}
-                        inputProps={{ name: type, id: `input-${type}-1`, autoComplete: 'off' }}
+                        inputProps={{ name: type, id: `input-${type}-1`, autoComplete: 'off', style: { width: '100%' } }}
                         value={formikprops.values[type]}
-                        specialLabel={label || `${required && "*"}${t.forms.mobile_phone}`}
+                        specialLabel={label || `${t.forms.mobile_phone}`}
                         variant="outlined"
                         country={getCountry(language)} />
                 </div>
                 <div style={{
                     width: formikprops.values.mobile_phone?.length <= 12 ? '0px' : '100%',
                     overflow: formikprops.values.mobile_phone?.length <= 12 && "hidden",
-                    margin: "-5px",
-                    padding: 5,
                     opacity: formikprops.values.mobile_phone?.length <= 12 && 0
                 }}
                 >
@@ -344,9 +338,9 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                             );
                             handleMobileFocus(value)
                         }}
-                        inputProps={{ name: type, id: `input-${type}`, autoComplete: 'off' }}
+                        inputProps={{ name: type, id: `input-${type}`, autoComplete: 'off', style: { width: '100%' } }}
                         value={formikprops.values[type]}
-                        specialLabel={label || `${required && "*"}${t.forms.mobile_phone}`}
+                        specialLabel={label || `${t.forms.mobile_phone}`}
                         variant="outlined"
                         country={getCountry(language)} />
 
@@ -380,7 +374,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 render={(ref, props) => (
                     <TextInputMasked
                         type="tel"
-                        label={label || `${required && "*"}${t("^forms.postal_code")}`}
+                        label={label || `${t.forms.postal_code}`}
                         inputRef={ref}
                         {...props}
                     />
@@ -398,7 +392,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t("^forms.postal_code")}`}
+                label={label || `${t("^forms.postal_code")}`}
                 name={type} variant="outlined" />
 
             break;
@@ -411,7 +405,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t("^forms.street", "")}`}
+                label={label || `${t.forms.street}`}
                 name={type} variant="outlined" />
 
             break;
@@ -424,7 +418,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t("^forms.street", "", "ligne 2")}`}
+                label={label || `${t("^forms.street", "", "ligne 2")}`}
                 name={type} variant="outlined" />
 
             break;
@@ -438,7 +432,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.street_number}`}
+                label={label || `${t.forms.street_number}`}
                 name={type} variant="outlined" />
 
             break;
@@ -451,7 +445,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.state}`}
+                label={label || `${t.forms.state}`}
                 name={type} variant="outlined" />
 
             break;
@@ -464,7 +458,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.district}`}
+                label={label || `${t.forms.district}`}
                 name={type} variant="outlined" />
 
             break;
@@ -477,7 +471,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.city}`}
+                label={label || `${t.forms.city}`}
                 name={type} variant="outlined" />
 
             break;
@@ -490,7 +484,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.country}`}
+                label={label || `${t.forms.country}`}
                 name={type} variant="outlined" />
 
             break;
@@ -528,7 +522,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 render={(ref, props) => (
                     <TextInputMasked
                         type="tel"
-                        label={label || t("^forms.postal_code", "*")}
+                        label={label || t.forms.postal_code}
                         inputRef={ref}
                         {...props}
                     />
@@ -559,7 +553,7 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t("^forms.street", "")}`}
+                label={label || t.forms.street}
                 name={type} variant="outlined" />
 
             break;
@@ -572,86 +566,86 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t("^forms.street", "", "ligne 2")}`}
+                label={label || `${t("^forms.street", "", "ligne 2")} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_number':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 autoComplete="number"
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.street_number}`}
+                label={label || `${t.forms.street_number} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_state':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.state}`}
+                label={label || `${t.forms.state} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_district':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.district}`}
+                label={label || `${t.forms.district} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_city':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.city}`}
+                label={label || `${t.forms.city} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_country':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.country}`}
+                label={label || `${t.forms.country} `}
                 name={type} variant="outlined" />
 
             break;
 
         case 'shipping_address_complement':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 InputLabelProps={{ shrink: Boolean(formikprops.values[type]) }}
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${required && "*"}${t.forms.complement}`}
+                label={label || `${t.forms.complement} `}
                 name={type} variant="outlined" />
 
             break;
@@ -761,13 +755,13 @@ const InputsSwitch = ({ type, formikprops, required, error, label, checkoutConfi
 
         case 'cc_cardholder':
             input = <TextField fullWidth
-                key={`input-${type}`}
+                key={`input - ${type} `}
                 autoComplete="cc-name"
                 error={error}
                 onBlur={formikprops.handleBlur}
                 onChange={formikprops.handleChange}
                 value={formikprops.values[type]}
-                label={label || `${t.forms.customer_name}`}
+                label={label || `${t.forms.customer_name} `}
                 name={type} variant="outlined" />
             break;
 

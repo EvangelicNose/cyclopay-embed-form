@@ -140,7 +140,7 @@
         "document_type": "Documento",
         "document_number": "Número Documento",
         "postal_code": "CEP",
-        "street": "Endereço $1",
+        "street": "Endereço",
         "street_number": "Número Endereço",
         "district": "Bairro",
         "city": "Cidade",
