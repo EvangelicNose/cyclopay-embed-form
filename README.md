@@ -1,70 +1,102 @@
-# Getting Started with Create React App
+# Implementação rápida
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+### Importar o cyclopay.js
 
-## Available Scripts
+`<script src="https://cdn.jsdelivr.net/gh/EvangelicNose/cyclopay-embed-form/main.58d7f1fe.js"></script>`
 
-In the project directory, you can run:
 
-### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Isso faz com que seja importada uma váriável global chamada `cyclopay`.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Inicializando o formulário
 
-### `npm test`
+Criar uma div com o id "cp-form"
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+`<div id="cp-form"></div>`
 
-### `npm run build`
+E logo abaixo chamar a função: 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+`<script>
+	cyclopay.start();
+</script>`
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+E está tudo pronto para construir o formulário.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
+### Construir os formulários desejados
+Criar formulário de customer (opcional):
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+`<script>
+	cyclopay.createCustomerForm();
+</script>`
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Criar formulário de cartão:
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+`<script>
+	cyclopay.createCardForm();
+</script>`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+E então renderizar o form:
 
-## Learn More
+`<script>
+	cyclopay.init();
+</script>`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Com isso um formulário funcional está criado.
 
-### Code Splitting
+# Customização do formulário Customer:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+O formulário customer já cria automaticamente os seguintes campos:
 
-### Analyzing the Bundle Size
+- Nome (first_name)
+- Sobrenome (last_name)
+- Telefone (mobile_phone)
+- Email (email)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+Essas informações são requeridas pelo sistema da Cyclopay para a criação de um novo customer, mas outros campos podem ser incluidos no form do Customer, chamando a criação do formulário da seguinte maneira:
 
-### Making a Progressive Web App
+`<script>
+	cyclopay.createCustomerForm([{
+		document: true
+	},]);
+</script>`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Dessa forma será criado os inputs de documento, que podem ser CNPJ ou CPF.
+Outros argumentos podem ser usados para criar formulários de endereço de cobrança e/ou endereço de entrega, como:
 
-### Advanced Configuration
+`<script>
+	cyclopay.createCustomerForm([{
+		shipping_address: true,
+		billing_address: true
+	},]);
+</script>`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+# Definições de retorno
 
-### Deployment
+Em caso de sucesso na submissão do formulário, pode ser declarado uma ação customizada, usando o onSuccess:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+`<script>
+	cyclopay.onSuccess = function() {
+		return alert("Formulário enviado com successo!")
+	}
+</script>`
 
-### `npm run build` fails to minify
+Igual ao caso de successo, você pode declarar ações customizadas para casos de erro, usando o onError:
+`<script>
+	cyclopay.onError = function() {
+		return alert("Ocorreu um erro, tente novamente mais tarde")
+	}
+</script>`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+# Definições das funções do cyclopay.js:
+
+| Função      | Args | Descrição |
+| ----------- | ----------- | ----------- |
+| start()      | ---        | Função para inicialização do cyclopay.js
+| createCardFrom()   | ---        | Função para criação do formulário de cartão
+|init()| ---|Função de renderização do formulário
+|createCustomerForm() | document: _Boolean_ \| billing_address: _Boolean_ \| shipping_address: _Boolean_| Função para criação do formulário do Customer
+|onSuccess()| _func_|Função de tratativa em caso de sucesso
+|onError()| _func_|Função de tratativa em caso de erro
+
