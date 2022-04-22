@@ -2,7 +2,7 @@
 
 ### Importar o cyclopay.js
 
-`<script src="https://cdn.jsdelivr.net/gh/EvangelicNose/cyclopay-embed-form/main.58d7f1fe.js"></script>`
+`<script src="https://cdn.jsdelivr.net/gh/EvangelicNose/cyclopay-embed-form/[ÚLTIMA VERSÃO OU VERSÃO DESEJADA]/cyclopay.js"></script>`
 
 
 
