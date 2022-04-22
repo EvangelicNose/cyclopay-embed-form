@@ -83,6 +83,7 @@ Em caso de sucesso na submissão do formulário, pode ser declarado uma ação c
 </script>`
 
 Igual ao caso de successo, você pode declarar ações customizadas para casos de erro, usando o onError:
+
 `<script>
 	cyclopay.onError = function() {
 		return alert("Ocorreu um erro, tente novamente mais tarde")
